@@ -13,7 +13,7 @@ pipeline {
                 sh "mvn clean install" 
         }
     }
-    stages{
+    
     stage("cmd") {
       steps{
          withCredentials([usernamePassword(credentialsId: 'id-2', usernameVariable: 'AKIAIR35NTPMFG3AT4AQ', passwordVariable: '/wT3Z3cUhiVsucAgIrUnojbK10K0wGkfSNGyIsmC')]) {
@@ -25,6 +25,7 @@ pipeline {
       }
     }
   }
+    stages{
     stage('Push'){
         steps{
             sh "aws s3 cp /var/lib/jenkins/workspace/DEV-CICD-LAMBDA/target/demo-1.0.0.jar s3://${bucket}"
