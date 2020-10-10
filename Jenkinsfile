@@ -13,7 +13,7 @@ pipeline {
                 sh "mvn clean install" 
         }
     }
-    
+    }
   
     stages{
     stage('Push'){
@@ -23,8 +23,7 @@ pipeline {
         }
         
     }
-          
+     
+	}     
 
   }
-
-}
