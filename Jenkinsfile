@@ -13,6 +13,9 @@ pipeline {
                 sh "mvn clean install" 
         }
     }
+	 stage('Build'){
+        sh "zip ${commitID()}.zip"
+    }
     
   
     
