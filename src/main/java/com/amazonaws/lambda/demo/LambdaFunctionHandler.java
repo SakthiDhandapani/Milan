@@ -10,7 +10,7 @@ public class LambdaFunctionHandler implements RequestHandler<Object, String> {
         context.getLogger().log("Input: " + input);
 
         // TODO: implement your handler
-        return "Hello ==MILAN===ITS==> Lambda!";
+        return "Hello ==MILAN===TS==> Lambda!";
     }
 
 }
