@@ -15,7 +15,7 @@ pipeline {
     }
     
     stages {
-      steps("cmd"){
+      stage("cmd"){
          withCredentials([usernamePassword(credentialsId: 'id-2', usernameVariable: 'AKIAIR35NTPMFG3AT4AQ', passwordVariable: '/wT3Z3cUhiVsucAgIrUnojbK10K0wGkfSNGyIsmC')]) {
            // available as an env variable, but will be masked if you try to print it out any which way
            sh 'echo $PASSWORD'
