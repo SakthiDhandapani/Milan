@@ -16,7 +16,7 @@ pipeline {
      
     stage('Push'){
         steps{
-            sh "aws s3 cp /target/*.jar s3://${bucket}"
+            sh "aws s3 cp /var/lib/jenkins/workspace/DEV-CICD-LAMBDA/target/demo-1.0.0.jar s3://${bucket}"
         }
         
     }
