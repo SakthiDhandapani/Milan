@@ -13,12 +13,11 @@ pipeline {
                 sh "mvn clean install" 
         }
     }
-    }
+    
   
-    stages{
+    
     stage('Push'){
-        steps{
-            
+        steps{            
             sh "aws s3 cp target/demo-1.0.0.jar s3://${bucket}"
         }
         
@@ -27,3 +26,5 @@ pipeline {
 	}     
 
   }
+
+  
