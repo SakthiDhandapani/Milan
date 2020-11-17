@@ -6,7 +6,7 @@ pipeline {
         stage('Development') {
           agent any
           steps {
-            sh 'mvn test'
+            sh 'mvn test sonar:sonar -Dsonar.host.url=http://localhost:9000'
             sh 'mvn clean install'
             sh 'aws s3 cp target/demo-1.0.0.jar s3://haeron-storage'
             sh '''aws lambda update-function-code --function-name myspringboot \\
