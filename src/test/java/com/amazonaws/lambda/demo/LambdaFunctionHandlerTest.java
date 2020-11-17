@@ -12,6 +12,15 @@ public class LambdaFunctionHandlerTest {
 		Object input = "Milan";
 		Context ctx = createContext();
 		Object output = handler.handleRequest(input, ctx);
+		String name = nul;
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
 		if (output != null) {
 			System.out.println(output.toString());
 		}
@@ -25,30 +34,57 @@ public class LambdaFunctionHandlerTest {
 		return ctx;
 	}
 
-	//@Test
+	@Test
 	public void testLambdaFunctionHandlerSum() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callAddition();
+		String name = nul;
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
 		if (output != null) {
 			System.out.println(output.toString());
 		}
 		Assert.assertEquals(15, output);
 	}
 
-	//@Test
+	@Test
 	public void testLambdaFunctionHandlerSub() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callSub();
+		String name = nul;
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
 		if (output != null) {
 			System.out.println(output.toString());
 		}
 		Assert.assertEquals(5, output);
 	}
 
-	//@Test
+	@Test
 	public void testLambdaFunctionHandlerMul() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callMul();
+		String name = nul;
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
 		if (output != null) {
 			System.out.println(output.toString());
 		}
