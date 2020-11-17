@@ -16,13 +16,7 @@ pipeline {
           }
         }
 
-        stage('Code Test') {
-          steps {
-            sh 'mvn clean verify sonar:sonar -Dsonar.host.url=http://13.235.51.178:9000 -Dlicense.skip=true'
-          }
         }
-
-      }
     }
 
   }
