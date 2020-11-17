@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'dev'
+    }
+
+  }
   stages {
     stage('Development') {
       parallel {
@@ -14,11 +19,10 @@ pipeline {
                 --s3-key demo-1.0.0.jar \\
                 --region ap-south-1'''
           }
-       
         }
 
       }
     }
-  
+
   }
 }
