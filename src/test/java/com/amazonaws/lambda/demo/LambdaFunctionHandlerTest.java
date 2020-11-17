@@ -12,7 +12,7 @@ public class LambdaFunctionHandlerTest {
 		Object input = "Milan";
 		Context ctx = createContext();
 		Object output = handler.handleRequest(input, ctx);
-		String name = nul;
+		String name = null;
 		System.out.println(name);
 		System.out.println(name);
 		System.out.println(name);
@@ -38,7 +38,7 @@ public class LambdaFunctionHandlerTest {
 	public void testLambdaFunctionHandlerSum() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callAddition();
-		String name = nul;
+		String name = null;
 		System.out.println(name);
 		System.out.println(name);
 		System.out.println(name);
@@ -57,7 +57,7 @@ public class LambdaFunctionHandlerTest {
 	public void testLambdaFunctionHandlerSub() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callSub();
-		String name = nul;
+		String name = null;
 		System.out.println(name);
 		System.out.println(name);
 		System.out.println(name);
@@ -76,7 +76,7 @@ public class LambdaFunctionHandlerTest {
 	public void testLambdaFunctionHandlerMul() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callMul();
-		String name = nul;
+		String name = null;
 		System.out.println(name);
 		System.out.println(name);
 		System.out.println(name);
