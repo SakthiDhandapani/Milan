@@ -25,7 +25,7 @@ public class LambdaFunctionHandlerTest {
 		return ctx;
 	}
 
-	@Test
+	//@Test
 	public void testLambdaFunctionHandlerSum() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callAddition();
@@ -35,7 +35,7 @@ public class LambdaFunctionHandlerTest {
 		Assert.assertEquals(15, output);
 	}
 
-	@Test
+	//@Test
 	public void testLambdaFunctionHandlerSub() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callSub();
@@ -45,7 +45,7 @@ public class LambdaFunctionHandlerTest {
 		Assert.assertEquals(5, output);
 	}
 
-	@Test
+	//@Test
 	public void testLambdaFunctionHandlerMul() {
 		LambdaFunctionHandler handler = new LambdaFunctionHandler();
 		Object output = handler.callMul();
