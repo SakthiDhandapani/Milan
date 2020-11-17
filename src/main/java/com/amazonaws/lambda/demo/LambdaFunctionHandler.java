@@ -25,7 +25,7 @@ public class LambdaFunctionHandler implements RequestHandler<Object, String> {
         public int callSub(){
         int numOne = 5;
         int numTwo = 10;
-        return numTwo - numTwo;
+        return numTwo - numOne;
     }
 
         public int callMul(){
