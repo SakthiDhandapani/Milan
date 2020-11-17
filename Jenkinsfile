@@ -14,19 +14,20 @@ pipeline {
                 --s3-key demo-1.0.0.jar \\
                 --region ap-south-1'''
           }
+          steps {
+      withSonarQubeEnv('SonarQube') {
+         sh "../../../sonar-scanner-2.9.0.670/bin/sonar-scanner"   
+      }
+
+      def qualitygate = waitForQualityGate()
+      if (qualitygate.status != "OK") {
+         error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
+      }
+   }
         }
 
       }
     }
-  stage("Quality Gate"){
-          sleep(60)
-      timeout(time: 1, unit: 'MINUTES') {
-     def qg = waitForQualityGate()
-    print "Finished waiting"
-    if (qg.status != 'OK') {
-        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-    }
-}  
-      }
+  
   }
 }
