@@ -18,7 +18,7 @@ pipeline {
 
         stage('Code Test') {
           steps {
-            sh 'mvn sonar:sonar -Dsonar.host.url=http://13.235.51.178:9000 -Dlicense.skip=true'
+            sh 'mvn clean verify sonar:sonar -Dsonar.host.url=http://13.235.51.178:9000 -Dlicense.skip=true'
           }
         }
 
