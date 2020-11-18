@@ -13,23 +13,7 @@ public class LambdaFunctionHandler implements RequestHandler<Object, String> {
         int mul = callMul();
         context.getLogger().log("Addition: " + sum);
         context.getLogger().log("Subtraction: " + sub);
-        context.getLogger().log("Multiplication: " + mul);
-        
-        context.getLogger().log("Addition: " + sum);
-        context.getLogger().log("Subtraction: " + sub);
-        context.getLogger().log("Multiplication: " + mul);
-        
-        context.getLogger().log("Addition: " + sum);
-        context.getLogger().log("Subtraction: " + sub);
-        context.getLogger().log("Multiplication: " + mul);
-        
-        context.getLogger().log("Addition: " + sum);
-        context.getLogger().log("Subtraction: " + sub);
-        context.getLogger().log("Multiplication: " + mul);
-        
-        context.getLogger().log("Addition: " + sum);
-        context.getLogger().log("Subtraction: " + sub);
-        context.getLogger().log("Multiplication: " + mul);
+        context.getLogger().log("Multiplication: " + mul);       
        
         return "Hello"+input+"Welcome";
     }
