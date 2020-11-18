@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     stages {
@@ -13,11 +14,23 @@ pipeline {
                 sh "mvn clean"
             }
         }
-		stage('>>>Sonar Testing<<<') {
-            steps {
-                sh "mvn test sonar:sonar -Dsonar.host.url=http://13.235.51.178:9000"
-            }
-        }		
+		stage('>>>SonarQube analysis <<<') {
+			withSonarQubeEnv('sonarqube') {
+				sh sh "mvn test sonar:sonar -Dsonar.host.url=http://13.235.51.178:9000"
+				}
+			}
+		
+		stage("Quality Gate"){
+		sleep(60)
+          timeout(time: 1, unit: 'MINUTES') {
+              def qg = waitForQualityGate()
+              if (qg.status != 'OK') {
+                  emailext body: 'Your code was failed due to sonarqube quality gate', subject: 'Jenkins Failed Report', to: 'haeronsakthi@gmail.com'
+                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
+
+              }
+          }
+      }
 		stage('>>>package<<<') {
             steps {
                 sh "mvn package"
