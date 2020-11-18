@@ -22,19 +22,15 @@ pipeline {
 			}
 		}
 		
-		stage("Quality Gate"){
-			steps{
-		sleep(60)
-          timeout(time: 1, unit: 'MINUTES') {
-              def qg = waitForQualityGate()
-              if (qg.status != 'OK') {
-                  emailext body: 'Your code was failed due to sonarqube quality gate', subject: 'Jenkins Failed Report', to: 'haeronsakthi@gmail.com'
-                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
-
-              }
-          }
+		stage('SonarQube analysis') {
+         steps {
+        withSonarQubeEnv('SonarQube Scanner') {
+          sh 'sonar-scanner'
 			}
-      }
+		}
+		}
+		
+		
 		stage('>>>package<<<') {
             steps {
                 sh "mvn package"
