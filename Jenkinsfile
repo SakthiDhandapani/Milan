@@ -15,12 +15,15 @@ pipeline {
             }
         }
 		stage('>>>SonarQube analysis <<<') {
+			steps{
 			withSonarQubeEnv('sonarqube') {
 				sh sh "mvn test sonar:sonar -Dsonar.host.url=http://13.235.51.178:9000"
 				}
 			}
+		}
 		
 		stage("Quality Gate"){
+			steps{
 		sleep(60)
           timeout(time: 1, unit: 'MINUTES') {
               def qg = waitForQualityGate()
@@ -30,6 +33,7 @@ pipeline {
 
               }
           }
+			}
       }
 		stage('>>>package<<<') {
             steps {
