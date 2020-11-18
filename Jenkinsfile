@@ -14,21 +14,14 @@ pipeline {
                 sh "mvn clean"
             }
         }
-		stage('>>>SonarQube analysis <<<') {
-			steps{
-			withSonarQubeEnv('sonarqube') {
-				sh sh "mvn test sonar:sonar -Dsonar.host.url=http://13.235.51.178:9000"
-				}
-			}
-		}
 		
-		stage('SonarQube analysis') {
+stage('SonarQube analysis') {
          steps {
-        withSonarQubeEnv('SonarQube Scanner') {
+       	 withSonarQubeEnv('SonarQube Scanner') {
           sh 'sonar-scanner'
 			}
 		}
-		}
+	}
 		
 		
 		stage('>>>package<<<') {
