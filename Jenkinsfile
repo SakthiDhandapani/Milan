@@ -11,7 +11,7 @@ pipeline {
         }
 		stage('>>>clean<<<') {
             steps {
-                sh "mvn clean"
+                sh "mvn clean install"
             }
         }
 		
@@ -33,12 +33,7 @@ stage('SonarQube analysis') {
                 }
             }
         }
-	stage('>>>JACOCO-REPORT<<<') {
-            steps {
-                sh "mvn jacoco:report"
-            }
-        }
-		stage('>>>package<<<') {
+	stage('>>>package<<<') {
             steps {
                 sh "mvn package"
             }
