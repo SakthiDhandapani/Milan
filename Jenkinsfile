@@ -33,7 +33,11 @@ stage('SonarQube analysis') {
                 }
             }
         }
-		
+	stage('>>>JACOCO-REPORT<<<') {
+            steps {
+                sh "mvn jacoco:report"
+            }
+        }
 		stage('>>>package<<<') {
             steps {
                 sh "mvn package"
