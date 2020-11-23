@@ -12,7 +12,10 @@ pipeline {
 		stage('>>>clean<<<') {
             steps {
                 sh "mvn clean install"
-		   
+		   timeout(time:5, unit:'DAYS') {
+    			input message:'Approve deployment?', submitter: 'milan'
+			}
+
             }
         }
 		
