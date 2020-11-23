@@ -1,5 +1,6 @@
 
 pipeline {
+BRANCH='${env.BRANCH_NAME}
     agent any
     stages {
         stage('Clone Repo and Clean it') {
@@ -44,7 +45,8 @@ stage('SonarQube analysis') {
         }
 		stage('>>>Deploy into S3<<<') {
 			 when {
-            branch 'dev'
+            branch 'dev2'
+				 sh '${BRANCH}'
         }
             steps {
                 sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
