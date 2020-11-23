@@ -12,17 +12,17 @@ pipeline {
 		stage('>>>clean<<<') {
             steps {
                 sh "mvn clean install"
-		   timeout(time:5, unit:'DAYS') {
+				timeout(time:5, unit:'DAYS') {
     			input message:'Approve deployment?', submitter: 'milan'
 			}
 
             }
         }
 		
-stage('SonarQube analysis') {
-         steps {
-       	 withSonarQubeEnv('SonarQube') {
-          sh 'mvn clean package sonar:sonar'
+		stage('SonarQube analysis') {
+			steps {
+				withSonarQubeEnv('SonarQube') {
+				sh 'mvn clean package sonar:sonar'
 			}
 		}
 	}
@@ -35,11 +35,12 @@ stage('SonarQube analysis') {
                 }
             }
         }
-	stage('>>>package<<<') {
+		stage('>>>package<<<') {
             steps {
                 sh "mvn package"
             }
         }
+		
 		stage('>>>Deploy into S3 and Update AWS Lambda!!!<<<') {
 			 when {
             branch 'dev'
@@ -47,12 +48,14 @@ stage('SonarQube analysis') {
             steps {
                 sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
             }
-	   steps {
+			
+			steps {
                 sh '''aws lambda update-function-code --function-name myspringboot \\
                 --s3-bucket haeron-storage \\
                 --s3-key demo-1.0.0.jar \\
                 --region ap-south-1'''
             }
-        }
-    }
+		}
+		
+	}    
 }
