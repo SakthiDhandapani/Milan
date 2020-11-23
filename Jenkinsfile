@@ -1,6 +1,6 @@
 
 pipeline {
-BRANCH='${env.BRANCH_NAME}
+BRANCH='${env.BRANCH_NAME}'
     agent any
     stages {
         stage('Clone Repo and Clean it') {
