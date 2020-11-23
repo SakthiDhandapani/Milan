@@ -12,9 +12,7 @@ pipeline {
 		stage('>>>clean<<<') {
             steps {
                 sh "mvn clean install"
-		   timeout(time:5, unit:'DAYS') {
-    			input message:'Approve deployment?', submitter: 'milan'
-			}
+		   
             }
         }
 		
@@ -50,9 +48,7 @@ stage('SonarQube analysis') {
             }
         }
 		stage('>>>Update Lambda<<<') {
-			 when {
-            branch 'dev'
-        }
+			
             steps {
                 sh '''aws lambda update-function-code --function-name myspringboot \\
                 --s3-bucket haeron-storage \\
