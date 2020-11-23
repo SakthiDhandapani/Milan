@@ -37,14 +37,27 @@ pipeline {
         }
 		stage('package') {
 			when {
-				branch 'dev'
+				expression { BRANCH_NAME =='main'}
 			}
-            steps {
-                sh "mvn package"
-		    timeout(time:5, unit:'DAYS') {
+            	steps {
+                	sh "mvn package"
+		    	timeout(time:5, unit:'DAYS') {
     			input message:'Approve deployment?', submitter: 'milan'
-			}
+		}
+		sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+                sh '''aws lambda update-function-code --function-name myspringboot \\
+                --s3-bucket haeron-storage \\
+                --s3-key demo-1.0.0.jar \\
+                --region ap-south-1'''
 
+            }
+	post{
+                success{
+                    echo "Successfully deployed to Production"
+                }
+                failure{
+                    echo "Failed deploying to Production"
+                }
             }
         }
 		
