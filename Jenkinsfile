@@ -35,41 +35,83 @@ pipeline {
                 }
             }
         }
-		stage('package') {
+		stage('Production') {
 			when {
 				expression { BRANCH_NAME =='main'}
 			}
             	steps {
                 	sh "mvn package"
-		    	timeout(time:5, unit:'DAYS') {
-    			input message:'Approve deployment?', submitter: 'milan'
-		}
-		sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
-                sh '''aws lambda update-function-code --function-name myspringboot \\
-                --s3-bucket haeron-storage \\
-                --s3-key demo-1.0.0.jar \\
-                --region ap-south-1'''
+					
+					timeout(time:5, unit:'DAYS') {
+					input message:'Approve deployment?', submitter: 'milan'
+					}
+					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+					sh '''aws lambda update-function-code --function-name myspringboot \\
+					--s3-bucket haeron-storage \\
+					--s3-key demo-1.0.0.jar \\
+					--region ap-south-1'''
 
             }
-	post{
-                success{
-                    echo "Successfully deployed to Production"
-                }
-                failure{
-                    echo "Failed deploying to Production"
-                }
-            }
+				post{
+					success{
+						echo "Successfully deployed to Production"
+					}
+					failure{
+						echo "Failed deploying to Production"
+					}
+				}
         }
 		
-stage('Upload into S3 and Update AWS Lambda!!!') {
-	
-            steps {
-		sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
-                sh '''aws lambda update-function-code --function-name myspringboot \\
-                --s3-bucket haeron-storage \\
-                --s3-key demo-1.0.0.jar \\
-                --region ap-south-1'''
+		stage('Stagging') {
+			when {
+				expression { BRANCH_NAME =='test'}
+			}
+            	steps {
+                	sh "mvn package"
+					timeout(time:5, unit:'DAYS') {
+					input message:'Approve deployment?', submitter: 'milan'
+					}
+					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+					sh '''aws lambda update-function-code --function-name myspringboot \\
+					--s3-bucket haeron-storage \\
+					--s3-key demo-1.0.0.jar \\
+					--region ap-south-1'''
+
             }
+				post{
+					success{
+						echo "Successfully deployed to Stagging"
+					}
+					failure{
+						echo "Failed deploying to Stagging"
+					}
+				}
         }
+		
+		stage('Development') {
+			when {
+				expression { BRANCH_NAME =='dev' | BRANCH_NAME =='dev2'}
+			}
+            	steps {
+                	sh "mvn package"
+					timeout(time:5, unit:'DAYS') 
+					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+					sh '''aws lambda update-function-code --function-name myspringboot \\
+					--s3-bucket haeron-storage \\
+					--s3-key demo-1.0.0.jar \\
+					--region ap-south-1'''
+
+            }
+				post{
+					success{
+						echo "Successfully deployed to Development"
+					}
+					failure{
+						echo "Failed deploying to Development"
+					}
+				}
+        }
+		
     }
 }
+
