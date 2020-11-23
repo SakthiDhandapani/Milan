@@ -1,9 +1,13 @@
 
 pipeline {
+	environment{
+		BRANCH_NAME= "${env.BRANCH_NAME}"
+	}
     agent any
     stages {
         stage('Clone Repo and Clean it') {
             steps {
+		    echo "${BRANCH_NAME}"
                 // Get some code from a GitHub repository
                 sh 'rm -rf Milan'                
                 sh 'git clone https://github.com/SakthiDhandapani/Milan.git'
