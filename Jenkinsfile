@@ -12,8 +12,9 @@ pipeline {
 		stage('>>>clean<<<') {
             steps {
                 sh "mvn clean install"
-		    def deploymentDelay=input id:'Deploy', message:'Deploye to Production?',submitter: 'milan', parameters:[choice(choices['0','1','2'],description:'Hours to Deploy', name:'deploymentDelay')]
-		    sleep time: deploymentDelay.toInteger(),unit:'HOURS'
+		   timeout(time:5, unit:'DAYS') {
+    			input message:'Approve deployment?', submitter: 'milan'
+			}
             }
         }
 		
