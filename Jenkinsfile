@@ -9,13 +9,9 @@ pipeline {
                 sh 'git clone https://github.com/SakthiDhandapani/Milan.git'
             }
         }
-		stage('>>>clean<<<') {
+		stage('clean') {
             steps {
-                sh "mvn clean install"
-				timeout(time:5, unit:'DAYS') {
-    			input message:'Approve deployment?', submitter: 'milan'
-			}
-
+                sh "mvn clean"
             }
         }
 		
@@ -35,15 +31,16 @@ pipeline {
                 }
             }
         }
-		stage('>>>package<<<') {
+		stage('package') {
             steps {
                 sh "mvn package"
             }
         }
 		
-stage('>>>Update Lambda<<<') {
+stage('Upload into S3 and Update AWS Lambda!!!') {
 			
             steps {
+		sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
                 sh '''aws lambda update-function-code --function-name myspringboot \\
                 --s3-bucket haeron-storage \\
                 --s3-key demo-1.0.0.jar \\
