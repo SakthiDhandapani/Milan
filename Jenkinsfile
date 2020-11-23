@@ -29,10 +29,8 @@ stage('SonarQube analysis') {
 
 	    stage("Quality Gate") {
             steps {
-		    sleep(11)
+		    sleep(10)
                 timeout(time: 1, unit: 'MINUTES') {
-                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-                    // true = set pipeline to UNSTABLE, false = don't
                     waitForQualityGate abortPipeline: true
                 }
             }
@@ -42,17 +40,14 @@ stage('SonarQube analysis') {
                 sh "mvn package"
             }
         }
-		stage('>>>Deploy into S3<<<') {
+		stage('>>>Deploy into S3 and Update AWS Lambda!!!<<<') {
 			 when {
             branch 'dev'
         }
             steps {
                 sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
             }
-        }
-		stage('>>>Update Lambda<<<') {
-			
-            steps {
+	   steps {
                 sh '''aws lambda update-function-code --function-name myspringboot \\
                 --s3-bucket haeron-storage \\
                 --s3-key demo-1.0.0.jar \\
