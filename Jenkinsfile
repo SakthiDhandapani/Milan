@@ -1,65 +1,115 @@
-
 pipeline {
-
+	environment{
+		BRANCH_NAME= "${env.BRANCH_NAME}"
+	}
     agent any
     stages {
         stage('Clone Repo and Clean it') {
             steps {
+		    echo "${BRANCH_NAME}"
                 // Get some code from a GitHub repository
                 sh 'rm -rf Milan'                
                 sh 'git clone https://github.com/SakthiDhandapani/Milan.git'
             }
         }
-		stage('>>>clean<<<') {
+		stage('clean') {
             steps {
-                sh "mvn clean install"
-		   timeout(time:5, unit:'DAYS') {
-    			input message:'Approve deployment?', submitter: 'milan'
-			}
-
+                sh "mvn clean"
             }
         }
 		
-stage('SonarQube analysis') {
-         steps {
-       	 withSonarQubeEnv('SonarQube') {
-          sh 'mvn clean package sonar:sonar'
+		stage('SonarQube analysis') {
+			steps {
+				withSonarQubeEnv('SonarQube') {
+				sh 'mvn clean package sonar:sonar'
 			}
 		}
 	}
 
 	    stage("Quality Gate") {
             steps {
-		    sleep(11)
+		    sleep(10)
                 timeout(time: 1, unit: 'MINUTES') {
-                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-                    // true = set pipeline to UNSTABLE, false = don't
                     waitForQualityGate abortPipeline: true
                 }
             }
         }
-	stage('>>>package<<<') {
-            steps {
-                sh "mvn package"
+		stage('Production') {
+			when {
+				expression { BRANCH_NAME =='main'}
+			}
+            	steps {
+                	sh "mvn package"
+					
+					timeout(time:5, unit:'DAYS') {
+					input message:'Approve deployment?', submitter: 'milan'
+					}
+					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+					sh '''aws lambda update-function-code --function-name myspringboot \\
+					--s3-bucket haeron-storage \\
+					--s3-key demo-1.0.0.jar \\
+					--region ap-south-1'''
+
             }
+				post{
+					success{
+						echo "Successfully deployed to Production"
+					}
+					failure{
+						echo "Failed deploying to Production"
+					}
+				}
         }
-		stage('>>>Deploy into S3<<<') {
-			 when {
-				 expression{env.BRANCH_NAME='dev2'}
-        }
-            steps {
-		    echo 'Greate this is DEV2'
-                sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+		
+		stage('Stagging') {
+			when {
+				expression { BRANCH_NAME =='test'}
+			}
+            	steps {
+                	sh "mvn package"
+					timeout(time:5, unit:'DAYS') {
+					input message:'Approve deployment?', submitter: 'milan'
+					}
+					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+					sh '''aws lambda update-function-code --function-name myspringboot \\
+					--s3-bucket haeron-storage \\
+					--s3-key demo-1.0.0.jar \\
+					--region ap-south-1'''
+
             }
+				post{
+					success{
+						echo "Successfully deployed to Stagging"
+					}
+					failure{
+						echo "Failed deploying to Stagging"
+					}
+				}
         }
-		stage('>>>Update Lambda<<<') {
+		
+		stage('Development') {
+			when {
+				expression { BRANCH_NAME =='dev' | BRANCH_NAME =='dev2'}
+			}
+            	steps {
+                	sh "mvn package"
 			
-            steps {
-                sh '''aws lambda update-function-code --function-name myspringboot \\
-                --s3-bucket haeron-storage \\
-                --s3-key demo-1.0.0.jar \\
-                --region ap-south-1'''
+					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+					sh '''aws lambda update-function-code --function-name myspringboot \\
+					--s3-bucket haeron-storage \\
+					--s3-key demo-1.0.0.jar \\
+					--region ap-south-1'''
+
             }
+				post{
+					success{
+						echo "Successfully deployed to Development"
+					}
+					failure{
+						echo "Failed deploying to Development"
+					}
+				}
         }
+		
     }
 }
