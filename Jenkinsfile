@@ -39,11 +39,17 @@ stage('SonarQube analysis') {
             }
         }
 		stage('>>>Deploy into S3<<<') {
+			 when {
+            branch 'dev'
+        }
             steps {
                 sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
             }
         }
 		stage('>>>Update Lambda<<<') {
+			 when {
+            branch 'dev'
+        }
             steps {
                 sh '''aws lambda update-function-code --function-name myspringboot \\
                 --s3-bucket haeron-storage \\
