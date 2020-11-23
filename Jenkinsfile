@@ -41,6 +41,7 @@ stage('SonarQube analysis') {
 		stage('>>>Deploy into S3<<<') {
             steps {
                 sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
+		    echo 'good to go'
             }
         }
 		stage('>>>Update Lambda<<<') {
