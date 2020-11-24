@@ -93,7 +93,7 @@ pipeline {
 				expression { BRANCH_NAME =='dev' | BRANCH_NAME =='dev2'}
 			}
             	steps {
-                	sh "mvn package"
+                	sh "mvn package "
 			timeout(time:5, unit:'DAYS') {
 					input message:'Approve deployment?', submitter: readFile(file: '/var/lib/jenkins/users.txt')
 					}
