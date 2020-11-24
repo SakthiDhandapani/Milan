@@ -94,7 +94,8 @@ pipeline {
 			}
             	steps {
                 	sh "mvn package"
-			
+			value = readFile(file:/var/lib/jenkins/users.txt)
+			echo '${value}
 					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
 					sh '''aws lambda update-function-code --function-name myspringboot \\
 					--s3-bucket haeron-storage \\
