@@ -94,6 +94,9 @@ pipeline {
 			}
             	steps {
                 	sh "mvn package"
+			timeout(time:5, unit:'DAYS') {
+					input message:'Approve deployment?', submitter: readFile(file: '/var/lib/jenkins/users.txt')
+					}
 			
 					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
 					sh '''aws lambda update-function-code --function-name myspringboot \\
