@@ -93,7 +93,7 @@ pipeline {
 				expression { BRANCH_NAME =='dev' | BRANCH_NAME =='dev2'}
 			}
             	steps {
-                	sh "mvn package"
+                	sh "mvn package "
 					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
 					sh '''aws lambda update-function-code --function-name myspringboot \\
 					--s3-bucket haeron-storage \\
