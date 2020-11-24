@@ -2,12 +2,15 @@
 pipeline {
 	environment{
 		BRANCH_NAME= "${env.BRANCH_NAME}"
+		APPROVER = readFile(file:"/var/lib/jenkins/users.txt")
+
 	}
     agent any
     stages {
         stage('Clone Repo and Clean it') {
             steps {
 		    echo "${BRANCH_NAME}"
+		    echo "${APPROVER}"
                 // Get some code from a GitHub repository
                 sh 'rm -rf Milan'                
                 sh 'git clone https://github.com/SakthiDhandapani/Milan.git'
