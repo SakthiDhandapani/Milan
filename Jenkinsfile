@@ -43,7 +43,7 @@ pipeline {
                 	sh "mvn package"
 					
 					timeout(time:5, unit:'DAYS') {
-					input message:'Approve deployment?', submitter: readFile(file: '/var/lib/jenkins/users.txt')
+					input message:'Approve deployment?', submitter: 'milan'
 					}
 					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
 					sh '''aws lambda update-function-code --function-name myspringboot \\
@@ -93,11 +93,7 @@ pipeline {
 				expression { BRANCH_NAME =='dev' | BRANCH_NAME =='dev2'}
 			}
             	steps {
-                	sh "mvn package "
-			timeout(time:5, unit:'DAYS') {
-					input message:'Approve deployment?', submitter: readFile(file: '/var/lib/jenkins/users.txt')
-					}
-			
+                	sh "mvn package"
 					sh "aws s3 cp target/demo-1.0.0.jar s3://haeron-storage"
 					sh '''aws lambda update-function-code --function-name myspringboot \\
 					--s3-bucket haeron-storage \\
