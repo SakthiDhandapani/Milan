@@ -67,7 +67,7 @@ pipeline {
 				expression { BRANCH_NAME =='test'}
 			}
             	steps {
-                	sh "mvn package"
+                	sh "mvn package "
 					timeout(time:5, unit:'DAYS') {
 					input message:'Approve deployment?', submitter: "${APPROVER}"
 					}
